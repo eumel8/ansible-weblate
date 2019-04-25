@@ -3,6 +3,7 @@
 
 - hosts: localhost
   gather_facts: "no"
+  become: true
   vars:
     venvdir: "/opt/weblate"
     wl_key: "{{ lookup('password', '/dev/null length=50 chars=ascii_letters') }}"
