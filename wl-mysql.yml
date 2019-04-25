@@ -1,0 +1,33 @@
+- name: Install mysql
+  package:
+    name: mysql-server
+    state: present
+
+- name: Create my.cnf
+  template:
+    src: templates/my.cnf.j2
+    dest: ~/.my.cnf
+
+- name: Set MySQL root password before installing
+  debconf: name='mysql-server' question='mysql-server/root_password' value='{{mysql_root_password | quote}}' vtype='password'
+
+- name: Confirm MySQL root password before installing
+  debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{mysql_root_password | quote}}' vtype='password'
+
+- name: Create mysql db
+  shell: mysql -e "CREATE DATABASE IF NOT EXISTS {{ db_name }} CHARACTER SET utf8 COLLATE utf8_general_ci"
+
+- name: Create mysql db user
+  shell: mysql -e "CREATE USER IF NOT EXISTS '{{ db_user }}'@'localhost' IDENTIFIED BY '{{ db_pass }}'"
+
+- name: Create mysql grants
+  shell: mysql -e "GRANT ALL PRIVILEGES ON {{ db_name }}.* TO '{{ db_user }}'@'localhost'"
+
+- name: Flush mysql privileges
+  shell: mysql -e "FLUSH PRIVILEGES"
+
+- name: Enable service mysql
+  service:
+    name: mysql
+    enabled: yes
+

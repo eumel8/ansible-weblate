@@ -1,0 +1,27 @@
+---
+dist: bionic
+
+language: python
+python:
+  - "3.6"
+
+# Doc: https://docs.travis-ci.com/user/customizing-the-build#Build-Matrix
+# https://docs.travis-ci.com/user/common-build-problems/
+env:
+  - ANSIBLE_VERSION=latest
+
+branches:
+  only:
+    - master
+    - dev
+
+install:
+  # Install Ansible.
+  - pip install ansible ansible-lint jmespath
+
+script:
+  # Check the role/playbook's syntax.
+  - find . -name "*.yml" | xargs ansible-lint
+
+  # Run the role/playbook with ansible-playbook.
+  - ansible-playbook wl-install.yml

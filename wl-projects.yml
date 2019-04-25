@@ -1,0 +1,55 @@
+# Ansible playbook to create projects and compoments in weblate
+#
+
+- hosts: localhost
+  gather_facts: "no"
+  vars:
+    venvdir: "/opt/weblate"
+    workingdir: "{{ venvdir }}/weblate.work"
+  vars_files: "vars/projects.yml"
+
+  tasks:
+    - name: create working dir
+      file:
+        path: "{{ workingdir }}"
+        state: directory
+
+    - name: clone git repo
+      git:
+        repo: "https://opendev.org/{{ project.0.name }}"
+        dest: "{{ workingdir }}/{{ project.0.name }}/{{ project.1 }}"
+        version: "{{ project.1 }}"
+      loop_control:
+        loop_var: project
+      loop: "{{ projects|subelements('branch') }}"
+      when: project.0.type == 'doc'
+
+    - name: create weblate projects for doc
+      shell: |
+        {{ venvdir }}/bin/weblate shell --command="\
+        from weblate.trans.models.project import Project
+        project = Project(name=\"{{ project.name.split('/')[-1][0:20] }}\",slug=\"{{ project.name.split('/')[-1][0:20] }}\")
+        project.save()"
+      loop_control:
+        loop_var: project
+      loop: "{{ projects|flatten }}"
+      when: project.type == 'doc'
+
+    - name: create weblate components for doc
+      shell: |
+        cd "{{ workingdir }}/{{ project.0.name }}/{{ project.1 }}"
+        mkdir -p doc/build/gettext
+        {{ venvdir }}/bin/sphinx-build -b gettext doc/source doc/build/gettext
+        cd doc/build/gettext
+        for i in `ls *.pot`;do
+        {{ venvdir }}/bin/weblate shell --command="\
+        from weblate.trans.models.project import Project
+        project = Project.objects.get(name=\"{{ project.0.name.split('/')[-1][0:20] }}\")
+        from weblate.trans.models.component import Component
+        component = Component(name=\"${i%.*}-{{ project.1 }}\",slug=\"$i-{{ project.1 }}\",project=project,vcs=\"git\",repo=\"https://opendev.org/{{ project.0.name }}\",push=\"\",repoweb=\"https://opendev.org/{{ project.0.name }}\",branch=\"{{ project.1 }}\",filemask=\"doc/source/locale/*/LC_MESSAGES/${i%?}\",new_base=\"doc/build/gettext/$i\",file_format=\"po\",new_lang=\"add\")
+        component.save()";
+        done
+      loop_control:
+        loop_var: project
+      loop: "{{ projects|subelements('branch') }}"
+      when: project.0.type == 'doc'

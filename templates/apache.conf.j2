@@ -1,0 +1,44 @@
+#
+# VirtualHost for weblate
+#
+# If using virtualenv, you need to add it to search path as well:
+# WSGIPythonPath /usr/share/weblate:/path/to/your/venv/lib/python2.7/site-packages
+#
+<VirtualHost *:80>
+    ServerAdmin admin@"{{ apache_site_name }}"
+    ServerName "{{ apache_site_name }}"
+
+    # DATA_DIR/static/robots.txt
+    Alias /robots.txt {{ venvdir }}/lib/{{ python_version }}/site-packages/weblate/static/robots.txt
+    # DATA_DIR/static/favicon.ico
+    Alias /favicon.ico {{ venvdir }}/lib/{{ python_version }}/site-packages/weblate/static/favicon.ico
+
+    # DATA_DIR/static/
+    #Alias /static/ {{ venvdir }}/lib/{{ python_version }}/site-packages/weblate/static/
+    Alias /static/ {{ venvdir }}/lib/{{ python_version }}/site-packages/django/contrib/admin/static/
+    #<Directory {{ venvdir }}/lib/{{ python_version }}/site-packages/weblate/static/>
+    <Directory {{ venvdir }}/lib/{{ python_version }}/site-packages/django/contrib/admin/static//>
+        Require all granted
+    </Directory>
+
+    # DATA_DIR/media/
+    Alias /media/ {{ venvdir }}/lib/{{ python_version }}/site-packages/weblate/media/
+    <Directory {{ venvdir }}/lib/{{ python_version }}/site-packages/weblate/media/>
+        Require all granted
+    </Directory>
+
+    # WSGIPythonPath {{ venvdir }}/lib/{{ python_version }}/site-packages
+    WSGIDaemonProcess {{ apache_site_name }} python-path={{ venvdir }}/lib/{{ python_version }}/site-packages
+    WSGIProcessGroup {{ apache_site_name }}
+    WSGIApplicationGroup %{GLOBAL}
+
+    WSGIScriptAlias / {{ venvdir }}/lib/{{ python_version }}/site-packages/weblate/wsgi.py process-group={{ apache_site_name }}
+    WSGIPassAuthorization On
+
+    <Directory {{ venvdir }}/lib/{{ python_version }}/site-packages/weblate>
+        <Files wsgi.py>
+        Require all granted
+        </Files>
+    </Directory>
+
+</VirtualHost>

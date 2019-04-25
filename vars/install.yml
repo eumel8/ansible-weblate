@@ -1,0 +1,57 @@
+python_version: python3.6
+deb_package_list:
+  - apache2
+  - apache2-utils
+  - libapache2-mod-wsgi-py3
+  - cron
+  - gettext
+  - libxml2-dev
+  - libxslt-dev
+  - libfreetype6-dev
+  - libjpeg-dev
+  - libz-dev
+  - libyaml-dev
+  - python3-dev
+  - build-essential
+  - python3-pip
+  - python3-virtualenv
+  - virtualenv
+  - default-libmysqlclient-dev
+  - python3-pymysql
+pip_package_list:
+  - Weblate
+  - pytz
+  - python-bidi
+  - PyYAML
+  - pyuca
+  - psycopg2-binary
+  - mysqlclient
+  - sphinx
+  - coreapi
+  - openstackdocstheme
+# Weblate components
+install_apache: True
+apache_site_name: weblate.example.com
+install_mysql: True
+install_postgresql: False
+mysql_root_password: 12345678+
+# Weblate configuration
+appuser: www-data
+appgroup: www-data
+debug: False
+db_engine: mysql
+db_name: weblate
+db_user: weblate
+db_pass: weblate
+db_host: 127.0.0.1
+db_port: 3306
+github_username: None
+server_email: "noreply@openstack.org"
+authentification_backend_list:
+  - social_core.backends.email.EmailAuth
+  - weblate.accounts.auth.WeblateUserBackend
+mt_backend_list:
+  - weblate.machinery.google.GoogleTranslation
+mt_deepl_key: None
+mt_microsoft_key: None
+mt_google_key: None

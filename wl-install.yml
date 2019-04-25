@@ -1,0 +1,62 @@
+# Ansible playbook to create projects and compoments in weblate
+#
+
+- hosts: localhost
+  gather_facts: "no"
+  vars:
+    venvdir: "/opt/weblate"
+    wl_key: "{{ lookup('password', '/dev/null length=50 chars=ascii_letters') }}"
+  vars_files: "vars/install.yml"
+
+  tasks:
+    - name: Install distro packages
+      package:
+        name: "{{ deb_package_list }}"
+        state: present
+      register: install_packages
+      until: install_packages is success
+      retries: 5
+      delay: 2
+
+    - name: Create venv and install pip packages
+      pip:
+        name: "{{ pip_package_list }}"
+        virtualenv: "{{ venvdir }}"
+        virtualenv_python: "{{ python_version }}"
+      register: install_packages
+      until: install_packages is success
+      retries: 5
+      delay: 2
+
+    - name: Create log dir
+      file:
+        path: "{{ venvdir }}/log"
+        state: directory
+      when: install_packages is success
+
+    - name: Set global file permissions
+      file:
+        path: "{{ venvdir }}"
+        owner: "{{ appuser }}"
+        group: "{{ appgroup }}"
+        recurse: True
+
+    - name: Generate and install setting.py
+      template:
+        src: templates/setting.py.j2
+        dest: "{{ venvdir }}/lib/{{ python_version }}/site-packages/weblate/settings.py"
+      when: install_packages is success
+
+    - name: Create mysql components
+      include_tasks: wl-mysql.yml
+      when: install_mysql|bool
+
+    - name: Migrate database
+      shell: "{{ venvdir }}//bin/weblate migrate"
+
+    - name: Create apache components
+      include_tasks: wl-apache.yml
+      when: install_apache|bool
+
+    - name: Create admin
+      shell: "{{ venvdir }}/bin/weblate createadmin --update"

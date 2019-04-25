@@ -1,0 +1,17 @@
+- name: Generate and install apache.conf
+  template:
+    src: templates/apache.conf.j2
+    dest: /etc/apache2/sites-enabled/weblate.conf
+
+- name: Activate wsgi module
+  shell: /usr/sbin/a2enmod wsgi
+
+- name: Restart service apache2
+  service:
+    name: apache2
+    state: restarted
+
+- name: Enable service apache2
+  service:
+    name: apache2
+    enabled: yes
