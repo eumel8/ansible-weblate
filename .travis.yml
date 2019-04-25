@@ -14,13 +14,17 @@ branches:
 
 before_install:
   # Install apt packages
-  - sudo apt install -y python3-apt
+  - sudo apt update
+  - sudo apt install -y python3-pip
 
 install:
   # Install Ansible.
-  - pip install ansible ansible-lint jmespath
+  - pip3 install ansible ansible-lint jmespath
 
 script:
+  # checks
+  - dpkg -l | grep apt
+  - pip3 list | grep apt
   # Check the role/playbook's syntax.
   - find . -name "*.yml" | xargs ansible-lint
 
