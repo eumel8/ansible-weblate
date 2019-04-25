@@ -21,7 +21,7 @@ before_install:
 
 install:
   # Install Ansible.
-  - pip install ansible ansible-lint jmespath
+  - pip install ansible ansible-lint jmespath python-apt
 
 script:
   # Check the role/playbook's syntax.
