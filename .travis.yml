@@ -1,6 +1,5 @@
 ---
 dist: bionic
-sudo: true
 
 language: python
 python:
@@ -25,4 +24,4 @@ script:
   - find . -name "*.yml" | xargs ansible-lint
 
   # Run the role/playbook with ansible-playbook.
-  - sudo ansible-playbook wl-install.yml
+  - ansible-playbook wl-install.yml
