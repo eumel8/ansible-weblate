@@ -17,7 +17,7 @@ branches:
 
 before_install:
   # Install apt packages
-  - apt install -y python3-apt
+  - sudo apt install -y python3-apt
 
 install:
   # Install Ansible.
