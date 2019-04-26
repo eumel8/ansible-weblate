@@ -1,0 +1,31 @@
+python_version: python3.6
+deb_package_list:
+  - apache2
+  - apache2-utils
+  - libapache2-mod-wsgi-py3
+  - cron
+  - gettext
+  - libxml2-dev
+  - libxslt-dev
+  - libfreetype6-dev
+  - libjpeg-dev
+  - libz-dev
+  - libyaml-dev
+  - python3-dev
+  - build-essential
+  - python3-pip
+  - python3-virtualenv
+  - virtualenv
+  - default-libmysqlclient-dev
+  - python3-pymysql
+pip_package_list:
+  - Weblate
+  - pytz
+  - python-bidi
+  - PyYAML
+  - pyuca
+  - psycopg2-binary
+  - mysqlclient
+  - sphinx
+  - coreapi
+  - openstackdocstheme

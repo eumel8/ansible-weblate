@@ -1,0 +1,23 @@
+# Ansible playbook to test installation of weblate
+#
+
+- hosts: localhost
+  gather_facts: True
+  become: True
+  vars:
+    venvdir: "/opt/weblate"
+  vars_files:
+    - "vars/weblate.yml"
+
+  tasks:
+    - name: Check Dashboard Page
+      uri:
+        url: http://{{ (apache_site_name | default(ansible_fqdn)) }}
+        return_content: yes
+        register: webcheck
+        failed_when: "'Dashboard' not in webcheck.content"
+
+    - name: Check Weblate
+      shell: "{{ venvdir }}/bin/weblate check"
+      register: weblate
+      failed_when: "'identified no issues' not in weblate.stdout"
