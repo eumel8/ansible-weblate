@@ -51,16 +51,16 @@
       shell: "{{ venvdir }}//bin/weblate migrate"
       when: install_mysql|bool
 
-    - name: Set global file permissions
-      file:
-        path: "{{ venvdir }}"
-        owner: "{{ appuser }}"
-        group: "{{ appgroup }}"
-        recurse: True
-
     - name: Create admin
       shell: "{{ venvdir }}/bin/weblate createadmin --update"
 
     - name: Create apache components
       include_tasks: wl-apache.yml
       when: install_apache|bool
+
+    - name: Set global file permissions
+      file:
+        path: "{{ venvdir }}"
+        owner: "{{ appuser }}"
+        group: "{{ appgroup }}"
+        recurse: True
