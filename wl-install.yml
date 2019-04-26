@@ -37,13 +37,6 @@
         state: directory
       when: install_packages is success
 
-    - name: Set global file permissions
-      file:
-        path: "{{ venvdir }}"
-        owner: "{{ appuser }}"
-        group: "{{ appgroup }}"
-        recurse: True
-
     - name: Generate and install setting.py
       template:
         src: templates/setting.py.j2
@@ -56,6 +49,14 @@
 
     - name: Migrate database
       shell: "{{ venvdir }}//bin/weblate migrate"
+      when: install_mysql|bool
+
+    - name: Set global file permissions
+      file:
+        path: "{{ venvdir }}"
+        owner: "{{ appuser }}"
+        group: "{{ appgroup }}"
+        recurse: True
 
     - name: Create apache components
       include_tasks: wl-apache.yml
