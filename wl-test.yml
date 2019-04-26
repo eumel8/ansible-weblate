@@ -3,6 +3,7 @@
 
 - hosts: localhost
   gather_facts: True
+  become: True
   vars:
     venvdir: "/opt/weblate"
   vars_files:
