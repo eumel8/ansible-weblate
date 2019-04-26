@@ -16,7 +16,7 @@ deb_package_list:
   - python3-pip
   - python3-virtualenv
   - virtualenv
-  - default-libmysqlclient-dev
+  - libmysqlclient-dev
   - python3-pymysql
 pip_package_list:
   - Weblate
