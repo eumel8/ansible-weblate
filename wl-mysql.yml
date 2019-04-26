@@ -18,9 +18,6 @@
     name: mysql
     state: restarted
 
-- name: OUT my.cnf
-  shell: cat ~/.my.cnf
-
 - name: Create mysql db
   shell: mysql -e "CREATE DATABASE IF NOT EXISTS {{ db_name }} CHARACTER SET utf8 COLLATE utf8_general_ci"
 
