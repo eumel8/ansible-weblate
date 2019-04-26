@@ -29,4 +29,4 @@ script:
   - find . -name "*.yml" | xargs ansible-lint
 
   # Run the role/playbook with ansible-playbook.
-  - ansible-playbook wl-install.yml
+  - ansible-playbook -e ansible_python_interpreter=/home/travis/virtualenv/python3.6.7/bin/python wl-install.yml
