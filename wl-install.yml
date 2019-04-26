@@ -53,11 +53,11 @@
 
     - name: Create admin
       shell: "{{ venvdir }}/bin/weblate createadmin --update"
+      register: admincredentials
 
     - name: Create apache components
       include_tasks: wl-apache.yml
       when: install_apache|bool
-      register: admincredentials
 
     - name: Set global file permissions
       file:
