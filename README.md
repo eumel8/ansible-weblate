@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/eumel8/ansible-weblate.svg?branch=master)](https://travis-ci.org/eumel8/ansible-weblate)
+
+
 Ansible Weblate Deployment
 ==========================
 
@@ -8,7 +11,7 @@ Prerequisites:
 --------------
 
   - Ubuntu 18.04 (bionic)
-  - Python 3xx
+  - Python 3.x
   - Ansible >2.6
 
 wl-install.yml  
