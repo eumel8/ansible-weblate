@@ -6,7 +6,7 @@
 #
 <VirtualHost *:80>
     ServerAdmin "admin@{{ (apache_site_name | default(ansible_fqdn)) }}"
-    ServerName "{{ apache_site_name }}"
+    ServerName "{{ (apache_site_name | default(ansible_fqdn)) }}"
 
     # DATA_DIR/static/robots.txt
     Alias /robots.txt {{ venvdir }}/lib/{{ python_version }}/site-packages/weblate/static/robots.txt
