@@ -13,6 +13,10 @@
 
 - name: Confirm MySQL root password before installing
   debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{mysql_root_password | quote}}' vtype='password'
+- name: Restart service mysql
+  service:
+    name: mysql
+    state: restarted
 
 - name: Create mysql db
   shell: mysql -uroot -e "CREATE DATABASE IF NOT EXISTS {{ db_name }} CHARACTER SET utf8 COLLATE utf8_general_ci"
