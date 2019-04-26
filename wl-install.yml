@@ -57,6 +57,7 @@
     - name: Create apache components
       include_tasks: wl-apache.yml
       when: install_apache|bool
+      register: admincredentials
 
     - name: Set global file permissions
       file:
@@ -64,3 +65,7 @@
         owner: "{{ appuser }}"
         group: "{{ appgroup }}"
         recurse: True
+
+    - name: Print out admin credentials
+      debug:
+        msg: "{{ admincredentials.stdout }}"
