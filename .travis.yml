@@ -23,10 +23,8 @@ install:
 
 script:
   # checks
-  - dpkg -l | grep apt
-  - pip freeze
+  - which python
   - pip3 freeze
-  - pip3 list | grep apt
   # Check the role/playbook's syntax.
   - find . -name "*.yml" | xargs ansible-lint
 
