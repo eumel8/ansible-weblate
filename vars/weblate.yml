@@ -1,6 +1,6 @@
 # Weblate components
 install_apache: True
-apache_site_name: weblate.example.com
+#apache_site_name: weblate.example.com
 install_mysql: True
 install_postgresql: False
 mysql_root_password: 12345678+

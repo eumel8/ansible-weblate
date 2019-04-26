@@ -5,7 +5,7 @@
 # WSGIPythonPath /usr/share/weblate:/path/to/your/venv/lib/python2.7/site-packages
 #
 <VirtualHost *:80>
-    ServerAdmin admin@"{{ apache_site_name }}"
+    ServerAdmin "admin@{{ (apache_site_name | default(ansible_fqdn)) }}"
     ServerName "{{ apache_site_name }}"
 
     # DATA_DIR/static/robots.txt
@@ -28,11 +28,11 @@
     </Directory>
 
     # WSGIPythonPath {{ venvdir }}/lib/{{ python_version }}/site-packages
-    WSGIDaemonProcess {{ apache_site_name }} python-path={{ venvdir }}/lib/{{ python_version }}/site-packages
-    WSGIProcessGroup {{ apache_site_name }}
+    WSGIDaemonProcess {{ (apache_site_name | default(ansible_fqdn)) }} python-path={{ venvdir }}/lib/{{ python_version }}/site-packages
+    WSGIProcessGroup {{ (apache_site_name | default(ansible_fqdn)) }}
     WSGIApplicationGroup %{GLOBAL}
 
-    WSGIScriptAlias / {{ venvdir }}/lib/{{ python_version }}/site-packages/weblate/wsgi.py process-group={{ apache_site_name }}
+    WSGIScriptAlias / {{ venvdir }}/lib/{{ python_version }}/site-packages/weblate/wsgi.py process-group={{ (apache_site_name | default(ansible_fqdn)) }}
     WSGIPassAuthorization On
 
     <Directory {{ venvdir }}/lib/{{ python_version }}/site-packages/weblate>
