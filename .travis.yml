@@ -1,12 +1,12 @@
 ---
 dist: bionic
 
-language: python
-python:
-  - "3.6"
+#language: python
+#python:
+#  - "3.6"
 
-virtualenv:
-  system_site_packages: true
+#virtualenv:
+#  system_site_packages: true
 
 # Doc: https://docs.travis-ci.com/user/customizing-the-build#Build-Matrix
 # https://docs.travis-ci.com/user/common-build-problems/

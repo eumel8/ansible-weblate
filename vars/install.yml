@@ -1,4 +1,4 @@
-python_version: python3.5
+python_version: python3.6
 deb_package_list:
   - apache2
   - apache2-utils
