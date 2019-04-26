@@ -2,12 +2,14 @@
 #
 
 - hosts: localhost
-  gather_facts: "no"
-  become: true
+  gather_facts: True
+  become: True
   vars:
     venvdir: "/opt/weblate"
     wl_key: "{{ lookup('password', '/dev/null length=50 chars=ascii_letters') }}"
-  vars_files: "vars/install.yml"
+  vars_files:
+    - "vars/ubuntu-{{ ansible_distribution_major_version }}.yml"
+    - "vars/weblate.yml"
 
   tasks:
     - name: Install distro packages
