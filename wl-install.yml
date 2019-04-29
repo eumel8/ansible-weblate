@@ -31,6 +31,14 @@
       retries: 5
       delay: 2
 
+    - name: Copy static files
+      copy:
+        src: "{{ item }}"
+        dest: "{{ venvdir }}/static/"
+      with_items:
+        - "{{ venvdir }}/lib/{{ python_version }}/site-packages/weblate/static/"
+        - "{{ venvdir }}/lib/{{ python_version }}/site-packages/django/contrib/admin/static/"
+
     - name: Create log dir
       file:
         path: "{{ venvdir }}/log"
