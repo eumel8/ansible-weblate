@@ -31,7 +31,7 @@
       retries: 5
       delay: 2
 
-  - name: Create log dir
+    - name: Create log dir
       file:
         path: "{{ venvdir }}/log"
         state: directory
@@ -59,7 +59,7 @@
       shell: "{{ venvdir }}/bin/weblate collectstatic --noinput"
       register: collectstatic
 
-  - name: Create apache components
+    - name: Create apache components
       include_tasks: wl-apache.yml
       when: install_apache|bool
 
