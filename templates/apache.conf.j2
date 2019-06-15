@@ -14,10 +14,8 @@
     Alias /favicon.ico {{ venvdir }}/lib/{{ python_version }}/site-packages/weblate/static/favicon.ico
 
     # DATA_DIR/static/
-    #Alias /static/ {{ venvdir }}/lib/{{ python_version }}/site-packages/weblate/static/
-    Alias /static/ {{ venvdir }}/lib/{{ python_version }}/site-packages/django/contrib/admin/static/
-    #<Directory {{ venvdir }}/lib/{{ python_version }}/site-packages/weblate/static/>
-    <Directory {{ venvdir }}/lib/{{ python_version }}/site-packages/django/contrib/admin/static//>
+    Alias /static/ {{ venvdir }}/data/static/
+    <Directory {{ venvdir }}/data/static/>
         Require all granted
     </Directory>
 
